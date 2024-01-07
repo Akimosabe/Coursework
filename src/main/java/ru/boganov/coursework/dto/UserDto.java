@@ -1,11 +1,12 @@
 package ru.boganov.coursework.dto;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotEmpty;
-
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,4 +23,6 @@ public class UserDto {
 
     @NotEmpty(message = "Пароль не должен быть пустым")
     private String password;
+
+    private List<String> roles;  // Добавлено свойство для хранения списка ролей
 }

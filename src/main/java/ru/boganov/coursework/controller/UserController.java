@@ -21,7 +21,7 @@ import java.util.List;
 
 
 @Controller
-public class SecurityController {
+public class UserController {
 
     @Autowired
     private Authentication authentication;
@@ -32,7 +32,7 @@ public class SecurityController {
     private final UserService userService;
 
     @Autowired
-    public SecurityController(UserService userService) {
+    public UserController(UserService userService) {
         this.userService = userService;
 
     }

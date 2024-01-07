@@ -71,9 +71,10 @@ public class UserServiceImpl implements UserService {
 
     private UserDto mapToUserDto(User user) {
         UserDto userDto = new UserDto();
-        String[] str = user.getName().split(" ");
-        userDto.setName(str[0]);
+        userDto.setId(user.getId());
+        userDto.setName(user.getName());
         userDto.setUsername(user.getUsername());
+        userDto.setRoles(user.getRoles().stream().map(Role::getName).collect(Collectors.toList()));
         return userDto;
     }
 
