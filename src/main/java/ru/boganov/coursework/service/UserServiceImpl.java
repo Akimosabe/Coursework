@@ -1,13 +1,13 @@
 package ru.boganov.coursework.service;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 import ru.boganov.coursework.dto.UserDto;
 import ru.boganov.coursework.entity.Role;
 import ru.boganov.coursework.entity.User;
 import ru.boganov.coursework.repository.RoleRepository;
 import ru.boganov.coursework.repository.UserRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
@@ -19,51 +19,94 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public  UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository,
-                            PasswordEncoder passwordEncoder) {
+    @Autowired
+    public UserServiceImpl(UserRepository userRepository,
+                           RoleRepository roleRepository,
+                           PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
     }
+
     @Override
     public void saveUser(UserDto userDto) {
         User user = new User();
-        user.setName(userDto.getFirstName() + " " + userDto.getLastName());
-        user.setEmail(userDto.getEmail());
+        user.setName(userDto.getName());
+        user.setUsername(userDto.getUsername());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
 
-        Role role = roleRepository.findByName("ROLE_ADMIN");
-        if (role == null) {
-            role = checkRoleExist();
+        Role role;
+        if (userRepository.count() == 0) {
+            role = roleRepository.findByName("ADMIN");
+            if (role == null) {
+                role = createAdminRole();
+            }
+        } else if (userRepository.count() == 1) {
+            role = roleRepository.findByName("USER");
+            if (role == null) {
+                role = createUserRole();
+            }
+        } else {
+            role = roleRepository.findByName("READ_ONLY");
+            if (role == null) {
+                role = createReadOnlyRole();
+            }
         }
         user.setRoles(Arrays.asList(role));
         userRepository.save(user);
     }
 
     @Override
-    public User findUserByEmail(String email) {
-        return userRepository.findByEmail(email);
+    public User findUserByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 
-    public List<Object> findAllUsers() {
+    @Override
+    public List<UserDto> findAllUsers() {
         List<User> users = userRepository.findAll();
         return users.stream()
-                .map(user -> mapToUserDto(user))
+                .map((user) -> mapToUserDto(user))
                 .collect(Collectors.toList());
     }
 
-    private Object mapToUserDto(User user) {
+    private UserDto mapToUserDto(User user) {
         UserDto userDto = new UserDto();
         String[] str = user.getName().split(" ");
-        userDto.setFirstName(str[0]);
-        userDto.setLastName(str[1]);
-        userDto.setEmail(user.getEmail());
+        userDto.setName(str[0]);
+        userDto.setUsername(user.getUsername());
         return userDto;
     }
 
-    private Role checkRoleExist() {
+    private Role createAdminRole() {
         Role role = new Role();
-        role.setName("ROLE_ADMIN");
+        role.setName("ADMIN");
         return roleRepository.save(role);
+    }
+
+    private Role createReadOnlyRole() {
+        Role role = new Role();
+        role.setName("READ_ONLY");
+        return roleRepository.save(role);
+    }
+
+    private Role createUserRole() {
+        Role role = new Role();
+        role.setName("USER");
+        return roleRepository.save(role);
+    }
+
+    @Override
+    public void addRoleToUser(String username, String roleName) {
+        User user = userRepository.findByUsername(username);
+        if (user != null) {
+            Role role = roleRepository.findByName(roleName);
+            if (role != null) {
+                user.getRoles().clear();
+                user.getRoles().add(role);
+                userRepository.save(user);
+            } else {
+            }
+        } else {
+        }
     }
 }

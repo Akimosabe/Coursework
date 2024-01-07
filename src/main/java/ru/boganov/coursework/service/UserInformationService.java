@@ -12,22 +12,23 @@ import ru.boganov.coursework.repository.UserRepository;
 import java.util.stream.Collectors;
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService {
+public class UserInformationService implements UserDetailsService {
     private UserRepository userRepository;
-
-    public CustomUserDetailsService(UserRepository userRepository) { this.userRepository = userRepository; }
+    public UserInformationService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
-    public UserDetails loadUserByUsername(String usernameOrEmail) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(usernameOrEmail);
-        if (user != null) {
-            return new org.springframework.security.core.userdetails.User(user.getEmail(),
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findByUsername(username);
+        if(user != null) {
+            return new org.springframework.security.core.userdetails.User(user.getUsername(),
                     user.getPassword(),
                     user.getRoles().stream()
                             .map((role) -> new SimpleGrantedAuthority(role.getName()))
                             .collect(Collectors.toList()));
         } else {
-            throw new UsernameNotFoundException("Invalid email or password");
+            throw new UsernameNotFoundException("Неправильное имя или пароль");
         }
     }
 }

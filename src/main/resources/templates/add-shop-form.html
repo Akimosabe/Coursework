@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Книги и Магазины</title>
@@ -19,38 +20,38 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/login}">Войти</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/register}">Регистрация</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/users}">Пользователи</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/list-books}">Книги</a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link active" aria-current="page" th:href="@{/list-shops}">Магазины</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/user-action-userLogs}">Логи</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/about}">О нас</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" th:href="@{/book-cost-form}">Расчет</a>
+                    <a class="nav-link active" aria-current="page" th:href="@{/logout}">Выйти</a>
                 </li>
             </ul>
         </div>
     </div>
 </nav>
-<br/><br/>
 <div class="container">
-    <div class="row">
-        <h1 class="text-center">Добро пожаловать!</h1>
-    </div>
+
+    <hr/>
+
+    <h3>Добавить новый магазин</h3>
+    <hr/>
+
+    <form th:action="@{/saveShop}" th:object="${shop}" method="POST">
+
+        <input type="text" th:field="*{name}" class="form-control col-4 mb-4" placeholder="Введите название"/>
+
+        <input type="text" th:field="*{address}" class="form-control col-4 mb-4" placeholder="Введите адрес"/>
+
+        <input type="text" th:field="*{availability}" class="form-control col-4 mb-4" Время работы="Введите наличие"/>
+
+        <button type="submit" class="btn btn-primary col-2">Сохранить</button>
+
+        <input type="hidden" th:field="*{id}"/>
+
+    </form>
+    <hr/>
+    <a th:href="@{/list-shops}">Назад к списку</a>
 </div>
+
 </body>
 </html>
