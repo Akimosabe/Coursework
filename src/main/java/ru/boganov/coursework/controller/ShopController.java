@@ -53,7 +53,7 @@ public class ShopController {
         String currentPrincipalName = authentication.getName();
         shop.setCreated(currentPrincipalName);
         shopRepository.save(shop);
-        logService.logAction(currentPrincipalName, "Создание магазина");
+        logService.logAction(currentPrincipalName, "Добавил магазин");
         return "redirect:/list-shops";
     }
     @GetMapping("/showUpdateFormShop")
@@ -68,7 +68,7 @@ public class ShopController {
                     (shop.getCreated().equals(currentPrincipalName))) {
                 ModelAndView mav = new ModelAndView("add-shop-form");
                 mav.addObject("shop", shop);
-                logService.logAction(currentPrincipalName, "Изменение магазина");
+                logService.logAction(currentPrincipalName, "Изменил магазин");
                 return mav;
             } else {
                 return new ModelAndView("redirect:/list-shops");
@@ -88,7 +88,7 @@ public class ShopController {
                     .anyMatch(r -> r.getAuthority().equals("ADMIN")) ||
                     (shop.getCreated().equals(currentPrincipalName))) {
                 shopRepository.deleteById(shopId);
-                logService.logAction(currentPrincipalName, "Удаление магазина");
+                logService.logAction(currentPrincipalName, "Удалил магазин");
             }
         }
         return "redirect:/list-shops";

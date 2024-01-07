@@ -72,7 +72,7 @@ public class BookController {
             bookShopRepository.save(new BookShop(book, shop));
         }
 
-        logService.logAction(currentPrincipalName, "Создание книги");
+        logService.logAction(currentPrincipalName, "Добавил книгу");
         return "redirect:/list-books";
     }
 
@@ -89,7 +89,7 @@ public class BookController {
                 ModelAndView mav = new ModelAndView("add-book-form");
                 mav.addObject("book", book);
                 mav.addObject("shops", shopRepository.findAll());
-                logService.logAction(currentPrincipalName, "Изменение книги");
+                logService.logAction(currentPrincipalName, "Изменил книгу");
                 return mav;
             } else {
                 return new ModelAndView("redirect:/list-books");
@@ -112,7 +112,7 @@ public class BookController {
                 // Удаляем связи книги с магазинами перед удалением книги
                 bookShopRepository.deleteByBook(book);
                 bookRepository.deleteById(bookId);
-                logService.logAction(currentPrincipalName, "Удаление книги");
+                logService.logAction(currentPrincipalName, "Удалил книгу");
             }
         }
         return "redirect:/list-books";

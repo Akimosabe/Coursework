@@ -18,10 +18,10 @@ public class LogsController {
         this.logService = logService;
     }
 
-    @GetMapping("/user-action-logs")
+    @GetMapping("/user-logs")
     public String getUserActionLogs(Model model) {
         List<UserLogs> userLogs = logService.getAllUserLogs();
-        model.addAttribute("userActionLogs", userLogs);
-        return "user-action-logs";
+        model.addAttribute("userLogs", userLogs);
+        return "user-logs";
     }
 }
