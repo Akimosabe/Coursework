@@ -2,10 +2,46 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Список пользователей</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    <title>Exclusive books in EKB</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #212529; /* Цвет фона */
+            color: #d0d0d0; /* Цвет текста */
+            margin-top: 60px; /* Зазор сверху для текста */
+        }
+
+        .navbar-dark .navbar-brand {
+            color: #ffffff; /* Цвет текста верхнего меню */
+        }
+
+        .navbar-dark .navbar-nav .nav-link {
+            color: #d0d0d0; /* Цвет текста ссылок верхнего меню */
+        }
+
+        .navbar-dark .navbar-toggler-icon {
+            background-color: #d0d0d0; /* Цвет иконки бургера */
+        }
+
+        .container {
+            margin-top: 40px; /* Зазор сверху для контейнера */
+        }
+
+        .form-label,
+        .form-select,
+        .btn-primary {
+            background-color: #343a40; /* Цвет фона меток, выпадающего списка и кнопки */
+            color: #d0d0d0; /* Цвет текста меток, выпадающего списка и кнопки */
+        }
+
+        .form-control {
+            background-color: #495057; /* Цвет фона полей ввода */
+            color: #d0d0d0; /* Цвет текста в полях ввода */
+        }
+    </style>
 </head>
 <body>
 
@@ -55,20 +91,20 @@
     <table class="table table-bordered table-hover">
         <thead class="thead-dark">
         <tr>
-            <th>ID</th>
-            <th>Имя</th>
-            <th>Имя пользователя</th>
-            <th>Роли</th>
+            <th style="color: #d0d0d0;">ID</th>
+            <th style="color: #d0d0d0;">Имя</th>
+            <th style="color: #d0d0d0;">Имя пользователя</th>
+            <th style="color: #d0d0d0;">Роли</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="user : ${users}">
-            <td th:text="${user.id}"></td>
-            <td th:text="${user.name}"></td>
-            <td th:text="${user.username}"></td>
-            <td>
+            <td style="color: #d0d0d0;" th:text="${user.id}"></td>
+            <td style="color: #d0d0d0;" th:text="${user.name}"></td>
+            <td style="color: #d0d0d0;" th:text="${user.username}"></td>
+            <td style="color: #d0d0d0;">
                 <ul>
-                    <li th:each="role : ${user.roles}" th:text="${role}"></li>
+                    <li th:each="role : ${user.roles}" style="color: #d0d0d0;" th:text="${role}"></li>
                 </ul>
             </td>
         </tr>
