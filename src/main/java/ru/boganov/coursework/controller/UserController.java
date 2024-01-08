@@ -101,24 +101,4 @@ public class UserController {
         return "users";
     }
 
-    @GetMapping("/book-cost-form")
-    public String showBookCostForm(Model model) {
-        model.addAttribute("bookDto", new BookDto());
-        return "book-cost-form";
     }
-
-    @PostMapping("/calculate-book-cost")
-    public String calculateBookCost(@ModelAttribute("bookDto") BookDto bookDto, Model model) {
-        org.springframework.security.core.Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String currentPrincipalName = authentication.getName();
-        double totalCost = calculateTotalBookCost(bookDto);
-        model.addAttribute("bookDto", bookDto);
-        model.addAttribute("totalCost", totalCost);
-        logService.logAction(currentPrincipalName, "Расчёт стоимости книги");
-        return "book-cost-form";
-    }
-
-    private double calculateTotalBookCost(BookDto book) {
-        return (book.getProductionCosts() + book.getDistributionCosts() + book.getOtherPublishingCosts()) / book.getQuantity();
-    }
-}
