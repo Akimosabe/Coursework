@@ -86,6 +86,9 @@ public class BookController {
             if (authentication.getAuthorities().stream()
                     .anyMatch(r -> r.getAuthority().equals("ADMIN")) ||
                     (book.getCreated().equals(currentPrincipalName))) {
+                // Очищаем связанные магазины
+                book.getBookShops().clear();
+
                 ModelAndView mav = new ModelAndView("add-book-form");
                 mav.addObject("book", book);
                 mav.addObject("shops", shopRepository.findAll());
@@ -110,7 +113,7 @@ public class BookController {
                     .anyMatch(r -> r.getAuthority().equals("ADMIN")) ||
                     (book.getCreated().equals(currentPrincipalName))) {
                 // Удаляем связи книги с магазинами перед удалением книги
-                bookShopRepository.deleteByBook(book);
+                book.getBookShops().clear(); // Очистка списка связанных магазинов
                 bookRepository.deleteById(bookId);
                 logService.logAction(currentPrincipalName, "Удалил книгу");
             }

@@ -48,4 +48,5 @@ public class Book {
         bookShops.remove(bookShop);
         bookShop.setBook(null);
     }
+
 }
